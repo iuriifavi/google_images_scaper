@@ -1,0 +1,6 @@
+<h1>Images</h1>
+<ul>
+<% for(var i=0; i<images.length; i++) {%>
+	<img src="<%= images[i].src %>" alt="<%= images[i].labels.join(" ") %>">
+<% } %>
+</ul>

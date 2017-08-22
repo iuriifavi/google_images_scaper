@@ -1,0 +1,15 @@
+#!/bin/bash
+
+REQ="http://images.google.com/search?q=$1&hl=en&sout=1&tbm=isch&start="
+AGENT="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+
+mkdir -p $1
+pushd $1
+for i in {0..50}
+do
+	J=$(expr $i \* 20)
+	echo "Welcome $J times"
+	echo "$REQ$J"
+	curl -A "$AGENT" -OL "$REQ$J"
+done
+popd

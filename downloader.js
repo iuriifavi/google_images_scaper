@@ -3,13 +3,10 @@ const http = require('http');
 const path = require('path');
 
 function DownloadImage(url, path) {
-	console.log(url);
 	var file = fs.createWriteStream(path);
 	var request = http.get(url, (response) => {
-		response.pipe(file);
-		file.on('finish', function() {
-	      file.close();
-	    });
+		console.log(url);
+		response.on('data', (data) => file.write(data) ).on('end', () => file.end());
 	}).on('error', (err) => fs.unlink(path) );
 }
 
@@ -21,7 +18,7 @@ function GetFileSaver(subDir) {
 	}
 
 	return (url, someValue) => {
-		downloadImage(url, path.join(dir, someValue.toString()));
+		DownloadImage(url, path.join(dir, someValue.toString()));
 	}
 }
 

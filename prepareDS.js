@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+var Rx = require('rxjs/Rx');
+
 var {Image, Images} = require('./images.js');
 Images = Images.instance;
 
@@ -23,7 +25,12 @@ Images.labels.forEach( (label) => {
     fs.mkdir("labels/" + label, console.log);
 })
 
-Images.images.forEach(function(image) {
+var queue = Rx.Observable.from(Images.images);
+var delayedQueue = queue.concatMap(img => {
+    return Rx.Observable.of(img).delay(1);
+    });
+
+delayedQueue.subscribe( (image) => {
     var name = image.src.slice(35);
     var fileName = "./images/" + name + ".jpg";
     if (fs.fileSize(fileName)) {
@@ -32,4 +39,4 @@ Images.images.forEach(function(image) {
             fs.copy(fileName, labeledFileName);
         });
     }
-}, Image);
+});

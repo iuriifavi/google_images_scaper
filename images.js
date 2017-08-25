@@ -85,7 +85,7 @@ class Images {
     }
 
     fix() {
-        this.images.forEach( (image) => image.labels.forEach( tolower ) );
+        this.images.forEach( (image) => image.labels = image.labels.map( tolower ) );
         this.labels = this.labels.filter( (x) => x ).map( tolower );
         this.save();
         return this.labels;
